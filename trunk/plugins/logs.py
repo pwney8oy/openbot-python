@@ -45,8 +45,8 @@ class Core:
         startdir = self.core.startdir
         utils.chdir("data/", startdir)
         today = time.strftime("%d-%m-%Y")
-        utils.chdir("logs/", startdir+"data/logs/")
-        utils.chdir("%s/"%chan, startdir+"data/logs/"+chan)
+        utils.chdir("logs/", startdir+"data/")
+        utils.chdir("%s/"%chan, startdir+"data/logs/")
         utils.write2file(log+"\n", "%s_%s"%(chan, today))
         os.chdir(startdir)
 
