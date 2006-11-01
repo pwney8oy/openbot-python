@@ -1,0 +1,7 @@
+OpenBot Installation
+--------------------
+
+For start the Bot just open it with Python, and it will ask all requirment information (eg. irc server, nickname, etc.)
+    $ python openbot.py
+    or in Demonize mode (only for Linux atm)
+    $ nohup twistd -y openbot.tac

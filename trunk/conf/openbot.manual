@@ -1,0 +1,13 @@
+ciao .botnick.=PRIVMSG .chan. :Hey .from.\n
+!owner=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
+!owners=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
+!time=PRIVMSG .chan. :Time: .hour.:.minuts. (.seconds.s)\n
+!date=PRIVMSG .chan. :Date: .day./.month./.year.\n
+!say=PRIVMSG .chan. :.from.: .message.[5:].\n
+!saluta=PRIVMSG .chan. :.from.: Ciao .message.[8:].\n
+!stats=PRIVMSG .from. :<--|-- Channel statistics --|-->\nPRIVMSG .from. :Peak: .peak.\nPRIVMSG .from. :Channel: .chan.\nPRIVMSG .from. :Users .usersnumber.: .users.\nPRIVMSG .from. :Opers .opersnumber.: .opers.\nPRIVMSG .from. :HalfOp .halfopnumber.: .halfop.\nPRIVMSG .from. :Voiced .voicednumber.: .voiced.\n
+!peak=PRIVMSG .chan. :.chan. Peak: .peak.\n
+!slap=PRIVMSG .chan. :.from. slaps .message.[6:]. around with a large trout\n
+!wiki=PRIVMSG .chan. :http://it.wikipedia.org/wiki/.message.[6:].\n
+!do=PRIVMSG .chan. :\001ACTION .from.: .message.[4:].\001\n
+!pep=PRIVMSG .chan. :http://www.python.org/dev/peps/pep-0008/\n
