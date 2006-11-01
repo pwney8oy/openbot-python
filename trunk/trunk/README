@@ -1,0 +1,7 @@
+OpenBot is an innovative and OpenSource Bot for Internet Relay Chat (IRC).
+
+The installation is described in the INSTALL file.
+
+SYSTEM REQUIRMENTS
+Python 2.4 or higher <http://www.python.org/>
+Twisted 2.2 or higher <http://twistedmatrix.com/trac/>

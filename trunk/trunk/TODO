@@ -1,0 +1,38 @@
+TODO OpenBot 0.1b:
+    Blocker
+    * Migliorare il sistema di import dei plugins, raffinarlo
+    * Fixare un bug del plugin _commands.py che avviene su Windows (penso problema di \n)
+    * Aggiungere il supporto a gettext per l'internazionalizzazione
+    * Velocizzare il codice, quindi pulirlo (esempio manual.py)
+    * Aggiungere la demonizzazione
+    * Aggiungere commenti qua e la' nel codice
+    * Aggiungere lettura actions (i /me)
+
+    Secondari
+    * Aggiungere trivia.py (quiz)
+    * Aggiungere shoutcast.py (radio)
+    * Aggiungere meteo.py (meteo)
+    * Aggiungere polls.py (sondaggi)
+    * Aggiungere al log la possibilita' di leggerlo via un nopaste (!log [canale])
+    * Connessione telnet, o ssh o qualunque cose per comandare il bot
+    * Supporto MultiServer
+
+
+
+COMPLETATI OpenBot 0.1b:
+    Blocker
+        Lux 03/07/2006 11:06
+        * Riscrivere il logger, in pratica il logger capira' se l'ultimo msg nello stdout e' stato inviato dallo stesso logger,
+          se non lo e quindi e' un errore da parte delle twisted o un avviso lo inserira nei log errors
+        Lux 03/07/2006 11:36
+        * Migliorare il sistema di import di librerie (__import__ = ["os", "sys"])
+
+    Secondari
+        Lux 03/07/2006 10:26
+        * Aggiungere la risposta "no results" in caso google.py non trovi nulla
+        Lux 03/07/2006 11:20
+        * Finire quote.py, manca !dquote [num] (solo per l'owner per cancellare il dato quote)
+	Lux 17/07/2006 15:35
+        * Aggiungere seen.py
+        Lux 20/07/2006 13:26
+        * Aggiungere google.py come plugin usando twisted google
