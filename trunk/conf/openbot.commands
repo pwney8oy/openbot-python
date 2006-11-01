@@ -1,0 +1,7 @@
+Comandi per tutti:
+!owner = in privato: gli sviluppatori || !time = in chan: la data corrente || !date = in chan: la data attuale || !stats = in chan: le statistiche del canale
+!peak = in chan: il picco di utenti del chan || !say [messaggio] = in chan: stampa [messaggio] || !do [messaggio] = in chan: stampa l'azione [messaggio]
+!saluta [nick] = in chan: saluta [nick] || !google [query] = in chan: ritorna il primo link della [query] || !commands = in privato: stampa questo messaggio
+!slap [nick] = in chan: Schiaffeggia [nick] || !wiki [query] = in chan: restituisce l'url su wikipedia di [query] || !pep = in chan: Ritorna il link dello stile del codice python
+!quote [quote] = in chan: aggiunge ai quote [quote] || !rquote = in chan: ritorna un quote casuale || !gquote [numero] = in chan: ritorna il quote numero [numero]
+!news list = in chan: lista dei siti news || !news [nome] = in chan: ritorna le news di [nome] || !news [nome] [numero] = in chan: ritorna l'url, il titolo e la descrizione della news [numero] su [nome]
