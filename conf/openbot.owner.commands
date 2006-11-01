@@ -1,0 +1,14 @@
+
+Comandi per l'owner:
+exec> [comando] = in chan: esegue [comando] e restituisce l'output || py> [code] = in chan: Esegue [code] in python e restituisce l'output
+!join [chan] = entra in [chan] || !part [chan] = esce da [chan] || !nick [nick] = cambia nick in [nick] || !quit [motivo] = chiude il bot per [motivo]
+!op [nick] = in chan: da potere di op a [nick] || !deop [nick] = in chan: toglie potere di op a [nick] || !halfop [nick] = in chan: da potere di halfop a [nick]
+!dehalfop [nick] = in chan: toglie potere di halfop a [nick] || !voice [nick] = in chan: da il voice a [nick] || !devoice [nick] = in chan: toglie il voice a [nick]
+!kickban [nick] = in chan: caccia e banna [nick] || !kick [nick] = in chan: caccia [nick] || !ban [nick] = in chan: banna [nick]
+!unban [nick] = toglie un ban a [nick] || !moderate = in chan: imposta +m || !unmoderate = in chan: imposta -m || !opme = in chan: da potere op all'owner
+!deopme [nick] = in chan: toglie potere op all'owner || !halfopme = in chan: da potere halfop all'owner || !dehalfop = in chan: toglie potere halfop all'owner
+!voiceme = in chan: da il voice all'owner || !devoiceme = in chan: toglie il voice all'owner || !banme = in chan: banna l'owner
+!debanme = in chan toglie il ban all'owner || !limit [numero] = in chan: importa +l [numero] || !unlimit = toglie il limite
+!secret = in chan: imposta +s || !unsecret = in chan: imposta -s || !onlyinvite = in chan: imposta +i || !unonlyinvite = in chan: imposta -i
+!mode [modo] = in chan: imposta [modo] || !dquote [numero] = cancella il quote [numero]
+!send [destinazione] [messaggio] = invia a [destinazione] [messaggio] ||

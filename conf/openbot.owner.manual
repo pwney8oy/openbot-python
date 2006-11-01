@@ -1,0 +1,5 @@
+!kick=KICK .chan. .message.[6:]. :Requested\n
+!kickban=MODE .chan. +b .message.[9:].\nKICK .chan. .message.[9:]. :Requested\n
+!invite=INVITE .message.[8:]. :.chan.\n
+!mode=MODE .chan. .message.[6:].\n
+!xstats=NOTICE .from. :<--|-- Channel statistics --|-->\nNOTICE .from. :Peak: .peak.\nNOTICE .from. :Channel: .chan.\nNOTICE .from. :Users .usersnumber.: .users.\nNOTICE .from. :Opers .opersnumber.: .opers.\nNOTICE .from. :HalfOp .halfopnumber.: .halfop.\nNOTICE .from. :Voiced .voicednumber.: .voiced.\n
