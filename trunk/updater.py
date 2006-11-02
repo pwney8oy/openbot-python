@@ -3,7 +3,7 @@ import time
 import urllib
 
 def openurl(url):
-    urlopen = urllib.urlopen("http://initd.org/svn/rebelcoders/OpenBot/" + url)
+    urlopen = urllib.urlopen("http://openbot-python.googlecode.com/svn/trunk/" + url)
     file = url.split("/")[-1]
     if os.path.exists(file):
         os.remove(file)

@@ -30,7 +30,7 @@ try:
 except:
     print """
 WARNING: loading old twisted irc protocol
-         some plugins, like google, will not work"""
+         some plugins, like google, could not work"""
     from twisted.protocols import irc
 from twisted.internet import reactor, protocol
 sys.path.append('library')
