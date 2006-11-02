@@ -20,44 +20,60 @@
 #    Free Software Foundation, Inc.,                                       #
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
-" The base  "
-class Core:
-    " Base answer "
+" Modes conf reader Plugin "
+class Modes:
+    " Load Modes conf file "
     def __init__(self, core):
-        " Plug to the irclib "
         self.core = core
         self.core.call("privmsg", self._on_privmsg)
+        self.modes_conf = self.core.startdir+"conf/openbot.modes"
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
         nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
-        if fromowners:
-            # If the !quit has requested the bot disconnect with the date reason
-            if message.startswith("!quit"):
+        fromowners = self.core.irc.channels.is_identified(nick)
+        if (fromowners) and (os.path.exists(self.modes_conf)):
+            # Se il padrone ha scritto qualcosa
+            # Carica il file di configurazione dei modi
+            conf = open(self.modes_conf, "r")
+            rows_number = 0
+            # Avvia un ciclo che legge ogni riga nel file di conf
+            for cfg in conf.readlines():
+                rows_number += 1
+                cfg = cfg.strip().split("=", 1)
                 try:
-                    reason = message[6:]
+                    error = False
+                    cfg_out = cfg[1]
+                    cfg = cfg[0]
                 except:
-                    reason = ""
-                self.core.quit(reason)
-            elif message.startswith("!join"):
-                self.core.irc.join(message[6:].replace(" ", ""))
-            elif message.startswith("!part"):
-                self.core.irc.leave(message[6:].replace(" ", ""))
-            elif message.startswith("!nick"):
-                self.core.irc.setNick(message[6:])
-            elif message.startswith("!send"):
-                send_to = message.split()
-                if len(send_to) < 3:
-                    self.core.privmsg(nick, "Usage: !send [to] [message]")
-                    return
-                message = ' '.join(send_to[2:])
-                self.core.privmsg(send_to[1], message)
+                    error = True
+                    self.core.add2log("-!ERROR!- %s: Line %s"%(
+                        self.modes_conf, str(rownumber)))
+                    continue
+                if message[:len(cfg)] == cfg:
+                    cfg_out = self.core.confparser(cfg_out, nick, "", channel,
+                                                   message, cfg).strip()
+                    set = cfg_out[0]
+                    if set == "+":
+                        set = True
+                    elif set == "-":
+                        set = False
+                    else:
+                        self.core.add2log("-!ERROR!- %s: Line %s"%(
+                            self.modes_conf, str(rownumber)))
+                        continue
+                    user = cfg_out.split()
+                    if len(user) > 1:
+                        user = user[1]
+                    else:
+                        user = None
+                    self.core.irc.mode(channel, set, cfg_out[1:], user=user)
 
 def main(core):
-    " Start the plugin "
-    Core(core)
+    " Start the Plugin and load all the needed modules "
+    modes = Modes(core)
 
 __functions__ = [main]
 __revision__ = 0
+__call__ = ["os"]
