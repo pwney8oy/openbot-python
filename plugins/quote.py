@@ -70,8 +70,8 @@ class Core:
                 if len(get_quote) < quote_num:
                     return
                 quote = get_quote[:quote_num]
-                if len(quote) != quote_num:
-                    quote += get_quote[quote_num:]
+                if len(get_quote) != quote_num:
+                    quote += get_quote[quote_num+1:]
                 open_quote.close()
                 save_quote = open(self.quote_file, "w")
                 save_quote.write(' '.join(quote))
