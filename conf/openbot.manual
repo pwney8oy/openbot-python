@@ -12,4 +12,4 @@ ciao .botnick.=PRIVMSG .chan. :Hey .from.\n
 !do=PRIVMSG .chan. :\001ACTION .from.: .message.[4:].\001\n
 !pep=PRIVMSG .chan. :http://www.python.org/dev/peps/pep-0008/\n
 !incula=PRIVMSG .chan. :\001ACTION incula .message.[8:]. con ardore\001\n
-!inculap=PRIVMSG .chan. :\001ACTION viene inculato da .from. con ardore\001\n
+!inculap=PRIVMSG .chan. :\001ACTION viene inculato da .message.[9:]. con ardore\001\n
