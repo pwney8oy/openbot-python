@@ -1,7 +1,7 @@
 ciao .botnick.=PRIVMSG .chan. :Hey .from.\n
 !owner=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
 !owners=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
-!time=PRIVMSG .chan. :Time: .hour.:.minuts. (.seconds.s)\n
+!time=PRIVMSG .chan. :Time: .hours.:.minutes. (.seconds.s)\n
 !date=PRIVMSG .chan. :Date: .day./.month./.year.\n
 !say=PRIVMSG .chan. :.from.: .message.[5:].\n
 !saluta=PRIVMSG .chan. :.from.: Ciao .message.[8:].\n
@@ -13,3 +13,4 @@ ciao .botnick.=PRIVMSG .chan. :Hey .from.\n
 !pep=PRIVMSG .chan. :http://www.python.org/dev/peps/pep-0008/\n
 !incula=PRIVMSG .chan. :\001ACTION incula .message.[8:]. con ardore\001\n
 !inculap=PRIVMSG .chan. :\001ACTION viene inculato da .message.[9:]. con ardore\001\n
+!uptime=PRIVMSG .chan. :\001ACTION is up from: .uptime_hours.h .uptime_minutes.m .uptime_seconds.s\001\n

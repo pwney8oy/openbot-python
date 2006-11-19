@@ -26,6 +26,7 @@ class ConfParser:
     def __init__(self, core):
         self.core = core
         self.core.confparser = self.confparser
+        self.uptime = time.time()
 
     def confparser(self, cfg_out, nick, host="", chan="", msg="", cfg=""):
         " The base confparser function "
@@ -33,17 +34,23 @@ class ConfParser:
         if len(cfg)+1 <= len(msg):
             cfg_out = cfg_out.replace(".to.", msg[len(cfg)+1:])
         # .from. viene cambiato con il nick della persona che e' entrata in chan
-        # Oppure con il nick della persona che ha scritto il messaggio
+        #   oppure con il nick della persona che ha scritto il messaggio
         # .botnick. viene cambiato col nick del bot
         # .chan. viene cambiato col chan corrente
-        # .hour. .minuts. .seconds. ecc.
+        # .hours. .minutes. .seconds. ecc.
+        # .uptime_hours/minutes/secondes.
+        #   viene cambiato con il tempo passato dall'avvio del Bot
         hms = time.strftime("%H.%M.%S").split(".")
         dmy = time.strftime("%d.%m.%y").split(".")
         owners = ' '.join(self.core.channels.identified())
+        uptime = time.localtime(time.time()-self.uptime)
+        uptime = (str(uptime[3]-1), str(uptime[4]), str(uptime[5]))
         dictionary = {".from.":nick, ".botnick.":self.core.conf.botnick,
-                      ".chan.":chan, ".hour.":hms[0], ".seconds.":hms[2],
-                      ".minuts.":hms[1], ".day.":dmy[0], ".month.":dmy[1],
-                      ".year.":dmy[2], ".owner.":owners}
+                      ".chan.":chan, ".hours.":hms[0], ".seconds.":hms[2],
+                      ".minutes.":hms[1], ".day.":dmy[0], ".month.":dmy[1],
+                      ".year.":dmy[2], ".owner.":owners,
+                      ".uptime_hours.":uptime[0], ".uptime_minutes.":uptime[1],
+                      ".uptime_seconds.":uptime[2]}
         cfg_out = self.core._replacer(dictionary, cfg_out)
         peakdir = self.core.startdir+"data/peak"
         if os.path.exists(peakdir):
