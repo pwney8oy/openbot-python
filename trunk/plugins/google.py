@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 ############################################################################
 #    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(lux@rebelcoders.org)              #
+#                           Authors: LuX(luciano.ferraro@gmail.com)        #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -34,8 +34,8 @@ class Core:
         """Called when I have a message from a user to me or a channel.
         """
         nick = user.split("!")[0]
-        if message.startswith("!google"):
-            query = ' '.join(message.split()[1:]).encode(self.core.ENCODING)
+        if message.startswith("!google "):
+            query = ' '.join(message.lstrip("!google ")).encode(self.core.ENCODING)
             check = twisted.web.google.checkGoogle(query)
             check.addCallback(self.resultSearch, nick, channel)
 
