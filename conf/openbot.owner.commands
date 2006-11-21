@@ -10,5 +10,5 @@ exec> [comando] = in chan: esegue [comando] e restituisce l'output || py> [cod
 !voiceme = in chan: da il voice all'owner || !devoiceme = in chan: toglie il voice all'owner || !banme = in chan: banna l'owner
 !debanme = in chan toglie il ban all'owner || !limit [numero] = in chan: importa +l [numero] || !unlimit = toglie il limite
 !secret = in chan: imposta +s || !unsecret = in chan: imposta -s || !onlyinvite = in chan: imposta +i || !unonlyinvite = in chan: imposta -i
-!mode [modo] = in chan: imposta [modo] || !dquote [numero] = cancella il quote [numero]
+!mode [modo] = in chan: imposta [modo] || !delquote [numero] = cancella il quote [numero]
 !send [destinazione] [messaggio] = invia a [destinazione] [messaggio] ||

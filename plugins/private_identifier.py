@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 ############################################################################
 #    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(lux@rebelcoders.org)              #
+#                           Authors: LuX(luciano.ferraro@gmail.com)        #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -35,8 +35,8 @@ class Core:
             return
         nick = user.split("!")[0]
         fromowners = self.core.channels.is_identified(nick)
-        if (not fromowners) and (message.startswith("identify:")):
-            password = message[10:]
+        if (not fromowners) and (message.startswith("identify: ")):
+            password = message.lstrip("identify: ")
             if password == self.core.conf.password:
                 self.core.channels.set_mode(channel, nick, "i")
                 self.core.privmsg(nick, "Welcome master I'm here to serve you")

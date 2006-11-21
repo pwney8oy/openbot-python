@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 ############################################################################
 #    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(lux@rebelcoders.org)              #
+#                           Authors: LuX(luciano.ferraro@gmail.com)        #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -38,13 +38,13 @@ import utils
 from channels import Channels
 from conf import Config
 
-__version__ = "0.1a"
+__version__ = "0.0.05a"
 __delay__ = 1.5
 
 class Core(irc.IRCClient):
     versionName = "OpenBot"
     versionNum = __version__
-    versionEnv = "http://projects.rebelcoders.org/"
+    versionEnv = "http://ferraro.wordpress.com/"
     lineRate = __delay__
 
     def __init__(self, factory):

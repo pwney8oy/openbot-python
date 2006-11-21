@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 ############################################################################
 #    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(lux@rebelcoders.org)              #
+#                           Authors: LuX(luciano.ferraro@gmail.com)        #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -37,17 +37,17 @@ class Core:
             # If the !quit has requested the bot disconnect with the date reason
             if message.startswith("!quit"):
                 try:
-                    reason = message[6:]
+                    reason = message.lstrip("!quit ")
                 except:
                     reason = ""
                 self.core.quit(reason)
-            elif message.startswith("!join"):
-                self.core.irc.join(message[6:].replace(" ", ""))
-            elif message.startswith("!part"):
-                self.core.irc.leave(message[6:].replace(" ", ""))
-            elif message.startswith("!nick"):
-                self.core.irc.setNick(message[6:])
-            elif message.startswith("!send"):
+            elif message.startswith("!join "):
+                self.core.irc.join(message.lstrip("!join ").replace(" ", ""))
+            elif message.startswith("!part "):
+                self.core.irc.leave(message.lstrip("!part ").replace(" ", ""))
+            elif message.startswith("!nick "):
+                self.core.irc.setNick(message.lstrip("!nick "))
+            elif message.startswith("!send "):
                 send_to = message.split()
                 if len(send_to) < 3:
                     self.core.privmsg(nick, "Usage: !send [to] [message]")

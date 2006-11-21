@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 ############################################################################
 #    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(lux@rebelcoders.org)              #
+#                           Authors: LuX(luciano.ferraro@gmail.com)        #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -41,7 +41,7 @@ class Core:
         # Se è stato inserito !quit il bot si disconnette con il motivo dato
         # Se non è stato dato un motivo userà quello di default: Requested
         message = message.split()
-        if message[0] == "!quote":
+        if message[0] == "!addquote":
             # Add a quote message in data/quote
             try:
                 quote = ' '.join(message[1:])
@@ -53,15 +53,18 @@ class Core:
             open_quote = open(self.quote_file, "a")
             open_quote.write(quote+"\n")
             open_quote.close()
-        elif message[0] in ("!rquote", "!gquote", "!dquote"):
+        elif message[0] in ("!randquote", "!getquote", "!delquote", "!quote"):
             if os.path.exists(self.quote_file):
                 open_quote = open(self.quote_file, "r")
+            else: return
             get_quote = open_quote.readlines()
-            if (message[0] == "!rquote") and (len(get_quote) > 0):
+            if not len(get_quote):
+                get_quote = "quote db is empy"
+            elif message[0] == "!randquote":
                 # Return a random quote from data/quote
                 get_quote = get_quote[random.randrange(0, len(get_quote))]
                 open_quote.close()
-            elif (message[0] == "!dquote") and (fromowners):
+            elif (message[0] == "!delquote") and (fromowners):
                 # Delete a quote from data/quote, only for the owner
                 try:
                     quote_num = int(message[1])
@@ -77,12 +80,33 @@ class Core:
                 save_quote.write(' '.join(quote))
                 save_quote.close()
                 return
-            elif message[0] == "!gquote":
+            elif message[0] == "!getquote":
                 # Return a quote from data/quote
                 try:
-                    get_quote = get_quote[int(message[1].strip().split()[0])]
+                    get_quote = get_quote[int(message[1].strip())]
                 except:
-                    return
+                    get_quote = "%s: invalid quote number" % (
+                        str(message[1].strip().split()[0]))
+                open_quote.close()
+            elif message[0] == "!quote":
+                # Return a quote from data/quote
+                check_string = ' '.join(message[1:])
+                check_quotes = []
+                num = 0
+                for quote_check in get_quote:
+                    if quote_check.find(check_string) != -1:
+                        check_quotes.append(num)
+                    num += 1
+                if len(check_quotes) != 0:
+                    check_quotes = random.randint(check_quotes[0],
+                                                  check_quotes[-1])
+                    try:
+                        get_quote = get_quote[int(check_quotes)]
+                    except:
+                        return
+                else:
+                    get_quote = "%s: invalid quote string" % (
+                        ' '.join(message[1:]))
                 open_quote.close()
             if (get_quote != "") and (type(get_quote) == type("")):
                 self.core.privmsg(channel, get_quote.strip())
