@@ -273,7 +273,7 @@ class OpenBot(protocol.ClientFactory):
         return protocol
 
     def privmsg(self, channel, message):
-        self.add2log("The Bot say: %s" % (message), channel)
+        self.add2log("The Bot said: %s" % (message), channel)
         self.irc.msg(channel, message)
 
     def clientConnectionLost(self, connector, reason):

@@ -31,8 +31,8 @@ class Modes:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
-        fromowners = self.core.irc.channels.is_identified(nick)
+        user = user.split("!")[0]
+        fromowners = self.core.irc.channels.is_identified(user)
         if (fromowners) and (os.path.exists(self.modes_conf)):
             # Se il padrone ha scritto qualcosa
             # Carica il file di configurazione dei modi
@@ -52,7 +52,7 @@ class Modes:
                         self.modes_conf, str(rownumber)))
                     continue
                 if message[:len(cfg)] == cfg:
-                    cfg_out = self.core.confparser(cfg_out, nick, "", channel,
+                    cfg_out = self.core.confparser(cfg_out, user, "", channel,
                                                    message, cfg).strip()
                     set = cfg_out[0]
                     if set == "+":

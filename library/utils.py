@@ -50,8 +50,8 @@ def _endreplacer(start_string, string2add="_"):
 
 def _replacer(dictionary, string2edit):
     for to_replace in dictionary.keys():
-        string2edit = string2edit.replace(to_replace,
-                                          dictionary[to_replace])
+        string2edit = string2edit.replace(str(to_replace),
+                                          str(dictionary[to_replace]))
     return string2edit
 
 def walk():

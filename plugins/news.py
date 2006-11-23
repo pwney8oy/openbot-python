@@ -63,7 +63,6 @@ class Core:
             if len(result) > 433:
                 result = result[:430] + "..."
             self.core.privmsg(channel, result)
-        nick = user.split("!")[0]
         message = message.split()
         RSS = {"slashdot":"http://rss.slashdot.org/Slashdot/slashdot",
                "ziobudda":"http://www.ziobudda.net/headlines/ziobudda.xml", 

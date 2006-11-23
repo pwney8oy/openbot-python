@@ -31,15 +31,14 @@ class Core:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        if channel != self.core.conf.botnick:
-            return
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
+        user = user.split("!")[0]
+        fromowners = self.core.channels.is_identified(user)
         if (not fromowners) and (message.startswith("identify: ")):
             password = message.lstrip("identify: ")
             if password == self.core.conf.password:
-                self.core.channels.set_mode(channel, nick, "i")
-                self.core.privmsg(nick, "Welcome master I'm here to serve you")
+                self.core.channels.set_mode(channel, user, "i")
+                message = "'%s' momentarily added to the owners's list" % (user)
+                self.core.privmsg(user, message)
 
 def main(core):
     " Start the plugin "

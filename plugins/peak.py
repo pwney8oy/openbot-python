@@ -86,10 +86,10 @@ class Core:
                 savedata.write(newpeak)
                 savedata.close()
             # Informa in chan del nuovo peak
-            self.core.add2log("Raggiunto nuovo peak di %s utenti grazie " \
-                              "a %s"% (str(usersnumber), nick), channel)
-            self.core.privmsg(channel, "Raggiunto nuovo peak di %s utenti " \
-                              "grazie a %s"% (str(usersnumber), nick))
+            peak_message = "New peak of %s users, thank to %s" % (
+                str(usersnumber), nick)
+            self.core.add2log(peak_message, channel)
+            self.core.privmsg(channel, peak_message)
 
 def main(core):
     " Start the Plugin and load all the needed modules "

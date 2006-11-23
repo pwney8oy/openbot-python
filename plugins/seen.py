@@ -28,43 +28,37 @@ class Core:
         self.core.call("userLeft", self._on_userLeft)
         self.core.call("privmsg", self._on_privmsg)
 
-    def make_seen_string(self, nick, channel):
+    def make_seen_string(self, user, channel):
         full_date = time.strftime("%d/%m/%Y")
         full_time = time.strftime("%H:%M")
-        return "%s %s %s %s\n"%(channel, nick, full_date, full_time)
+        return "%s %s %s %s\n"%(channel, user, full_date, full_time)
 
-    def append_to_config(self, nick, channel):
-        string = self.make_seen_string(nick, channel)
+    def append_to_config(self, user, channel):
+        string = self.make_seen_string(user, channel)
         utils.write2file(string, "seen")
 
-    def parse_file(self, nick):
+    def parse_file(self, user):
         read = utils.open_file("seen", True)
         if not read:
             return ""
         else:
             result = ""
             for line in read:
-                if line.split()[1] != nick:
+                if line.split()[1] != user:
                     result += line
             return result
 
-    def seen_system(self, nick, channel):
+    def seen_system(self, user, channel):
         startdir = self.core.startdir
         utils.chdir("data/", startdir)
-        parsed_file = self.parse_file(nick)
+        parsed_file = self.parse_file(user)
         if parsed_file != "":
             os.remove("seen")
         utils.write2file(parsed_file, "seen")
-        self.append_to_config(nick, channel)
+        self.append_to_config(user, channel)
         os.chdir(startdir)
 
-    def _on_userLeft(self, user, channel):
-        """Called when I see another user leaving a channel.
-        """
-        nick = user.split("!")[0]
-        self.seen_system(nick, channel)
-
-    def search(self, nick):
+    def search(self, user):
         read = utils.open_file("seen", True)
         if not read:
             return ""
@@ -72,31 +66,36 @@ class Core:
             result = ""
             for line in read:
                 line = line.split()
-                if line[1] == nick:
-                    result = "I saw %s in %s on %s at %s"%(nick, line[0],
+                if line[1] == user:
+                    result = "I saw %s in %s on %s at %s"%(user, line[0],
                                                            line[2], line[3])
             return result
+
+    def _on_userLeft(self, user, channel):
+        """Called when I see another user leaving a channel.
+        """
+        self.seen_system(user, channel)
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
+        user = user.split("!")[0]
         if message.startswith("!seen"):
-            seen_nick = message.split()[1]
-            nick_channels = self.core.channels.get_users_channels(seen_nick)
-            if seen_nick == nick:
+            seen_user = message.split()[1]
+            user_channels = self.core.channels.get_users_channels(seen_user)
+            if seen_user == user:
                 result = "I'm Mandrake, and who are you?"
-            elif seen_nick == self.core.conf.botnick:
+            elif seen_user == self.core.conf.botuser:
                 result = "Don't joke me dude..."
-            elif len(nick_channels) != 0:
-                result = "%s is online (%s)"%(seen_nick,
-                                              ', '.join(nick_channels))
+            elif len(user_channels) != 0:
+                result = "%s is online (%s)"%(seen_user,
+                                              ', '.join(user_channels))
             else:
                 startdir = self.core.startdir
                 utils.chdir("data/", startdir)
-                result = self.search(seen_nick)
+                result = self.search(seen_user)
                 if result == "":
-                    result = "I never saw %s..."%seen_nick
+                    result = "I never saw %s..."%seen_user
                 os.chdir(startdir)
             self.core.privmsg(channel, result)
 

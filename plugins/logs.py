@@ -28,7 +28,7 @@ class Core:
         self.core.add2log = self.add2log
         for i in ["connectionLost", "signedOn", "userJoined", "kickedFrom",
                   "userKicked", "modeChanged", "nickChanged", "userRenamed",
-                  "userLeft", "privmsg", "userQuit"]:
+                  "userLeft", "privmsg", "userQuit", "action"]:
             self.core.call(i, getattr(self, "_on_" + i))
 
     def add2log(self, log, chan="general"):
@@ -45,40 +45,39 @@ class Core:
         startdir = self.core.startdir
         utils.chdir("data/", startdir)
         today = time.strftime("%d-%m-%Y")
-        utils.chdir("logs/", startdir+"data/")
-        utils.chdir("%s/"%chan, startdir+"data/logs/")
-        utils.write2file(log+"\n", "%s_%s"%(chan, today))
+        utils.chdir("logs/", startdir + "data/")
+        utils.chdir(chan + "/", startdir + "data/logs/")
+        utils.write2file(log + "\n", "%s_%s" % (chan, today))
         os.chdir(startdir)
 
     def _on_connectionLost(self, reason):
         """Start when you get disconnected from the IRC Server
         """
-        self.add2log((" Quit, Reason: %s"%(reason)).strip())
+        self.add2log((" Quit, Reason: %s" % (reason)).strip())
 
     def _on_signedOn(self):
         """Called after sucessfully signing on to the server.
         """
         port = str(self.core.conf.port)
-        self.add2log((" Succerfull connected to %s:%s\n"%(
+        self.add2log((" Succerfull connected to %s:%s\n" % (
             self.core.conf.host, port)).strip())
 
     def _on_kickedFrom(self, channel, kicker, message):
         """Called when I am kicked from a channel.
         """
-        self.add2log((" The Bot has kicked by %s: %s\n"%(
+        self.add2log((" The Bot has kicked by %s: %s\n" % (
             kicker.split("!")[0], message)).strip(), channel)
 
     def _on_userKicked(self, kickee, channel, kicker, message):
         """Called when I observe someone else being kicked from a channel.
         """
-        self.add2log((" %s has kicked %s: %s\n"%(
+        self.add2log((" %s has kicked %s: %s\n" % (
             kicker.split("!")[0], kickee.split("!")[0], message)).strip(),
                     channel)
 
     def _on_modeChanged(self, user, channel, set, modes, args):
         """Called when a channel's modes are changed
         """
-        nick = user.split("!")[0]
         for mode in modes:
             if set:
                 mode = "+" + mode
@@ -88,56 +87,52 @@ class Core:
                 mode += " to " + args[0]
             except:
                 pass
-            self.add2log((" %s (%s) set: %s\n"%(nick, user, mode)).strip(),
-                        channel)
+            self.add2log((" %s set: %s\n" % (user, mode)).strip(), channel)
 
-    def _on_nickChanged(self, nick):
-        """Called when my nick has been changed.
+    def _on_nickChanged(self, user):
+        """Called when my user has been changed.
         """
-        self.add2log((" You are now known as %s\n"%(nick)).strip())
+        self.add2log((" You are now known as %s\n" % (user)).strip())
 
     def _on_userRenamed(self, oldname, newname):
         """A user changed their name from oldname to newname.
         """
-        self.add2log((" %s is now known as %s\n"%(oldname, newname)).strip())
+        self.add2log((" %s is now known as %s\n" % (oldname, newname)).strip())
 
-    def _on_userLeft(self, user, channel):
+    def _on_userLeft(self, channel):
         """Called when I see another user leaving a channel.
         """
-        host = user
-        nick = user.split("!")[0]
-        self.add2log((" %s (%s) has part %s\n"%(
-            nick, host, channel)).strip(), channel)
+        self.add2log((" %s has part %s\n" % (
+            user, host, channel)).strip(), channel)
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
+        user = user.split("!")[0]
         if channel == self.core.conf.botnick:
             channel = "private"
-        self.add2log("%s say: %s"%(nick, message), channel)
+        self.add2log(("%s said: %s" % (user, message)).strip(), channel)
 
     def _on_userQuit(self, user, quitMessage):
         """Called when I see another user disconnect from the network.
         """
-        host = user
-        nick = user.split("!")[0]
-        self.add2log((" %s (%s) has quit (%s)"%(
-            nick, host, quitMessage)).strip())
+        self.add2log(("%s has quit (%s)" % (user, quitMessage)).strip())
 
     def _on_joined(self, channel):
         """Called when I finish joining a channel.
         """
-        self.add2log((" You joined %s\n"%(channel)).strip(), channel)
-        
+        self.add2log(("You joined %s" % (channel)).strip(), channel)
 
     def _on_userJoined(self, user, channel):
         """Called when I see another user joining a channel.
         """
-        host = user
-        nick = user.split("!")[0]
-        self.add2log((" %s (%s) has joined %s\n"%(
-            nick, host, channel)).strip(), channel)
+        self.add2log(("%s has joined %s" % (user, channel)).strip(), channel)
+
+    def _on_action(self, user, channel, data):
+        """Called when I see a user perform an ACTION on a channel.
+        """
+        user = user.split("!")[0]
+        self.add2log(("%s did: %s" % (user, data)).strip(), channel)
 
 def main(core):
     " Start the Plugin and load all the needed modules "

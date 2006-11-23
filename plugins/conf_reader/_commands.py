@@ -27,43 +27,43 @@ class Core:
         self.core = core
         self.core.call("privmsg", self._on_privmsg)
         self.commands = 0
-        self.commandsnick = []
+        self.commandsuser = []
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
-        if nick != self.core.conf.botnick:
+        user = user.split("!")[0]
+        fromowners = self.core.channels.is_identified(user)
+        if user != self.core.conf.botnick:
             if (os.path.exists("conf/openbot.commands")) and (
                 message.startswith("!commands")):
                 canstart = False
                 if self.commands < 3:
                     canstart = True
-                    if nick in self.commandsnick:
+                    if user in self.commandsuser:
                         canstart = False
                 # Carica il file di configurazione
                 if canstart:
-                    thread.start_new(self._commands, (fromowners,nick, channel))
+                    thread.start_new(self._commands, (fromowners,user, channel))
                 else:
-                    self.core.privmsg(nick, "Too many commands Requests")
+                    self.core.privmsg(user, "Too many commands Requests")
 
-    def _commands(self, owner, nick, chan):
+    def _commands(self, owner, user, chan):
         """Invia i comandi
         """
-        self.commandsnick.append(nick)
+        self.commandsuser.append(user)
         self.commands += 1
         conf = open(self.core.startdir + "conf/openbot.commands", "r")
         for cfg in conf.readlines():
-            cfg_out = self.core.confparser(cfg.strip(), nick, chan=chan)
-            self.core.privmsg(nick, cfg_out)
+            cfg_out = self.core.confparser(cfg.strip(), user, chan=chan)
+            self.core.privmsg(user, cfg_out)
         if owner:
             conf = open(self.core.startdir + "conf/openbot.owner.commands", "r")
             for cfg in conf.readlines():
-                cfg_out = self.core.confparser(cfg.strip(), nick, chan=chan)
-                self.core.privmsg(nick, cfg_out)
+                cfg_out = self.core.confparser(cfg.strip(), user, chan=chan)
+                self.core.privmsg(user, cfg_out)
         self.commands -= 1
-        del self.commandsnick[self.commandsnick.index(nick)]
+        del self.commandsuser[self.commandsuser.index(user)]
 
 def main(core):
     " Start the Plugin and load all the needed modules "
