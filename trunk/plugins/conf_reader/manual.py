@@ -32,9 +32,10 @@ class Manual:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
+        user = user.split("!")[0]
         def manualdef(owner=False):
             " Carica il file di configurazione "
-            # Se il nick della persona che ha inviato il messaggio e' l'owner
+            # Se il user della persona che ha inviato il messaggio e' l'owner
             #  carica openbot.owner.manual
             if owner:
                 try:
@@ -55,20 +56,13 @@ class Manual:
                     return error
             # Avvia un ciclo che legge tutte le righe nel file di conf
             for cfg in conf.readlines():
-                # Elimina \r e \n e splitta il file usando =
+                # Parserizza il conf
+                cfg = self.core.confparser(cfg.strip(), user, channel)
                 cfg = cfg.strip().split("=", 1)
                 cfg_out = cfg[1]
-                # .botnick. viene cambiato col nick del bot
-                cfg = cfg[0].replace(".botnick.", self.core.conf.botnick)
-                # Elimina gli spazi unutili
-                cfg = cfg.split()
-                nmsg = ' '.join(message.split(" ")[:len(cfg)])
-                cfg = ' '.join(cfg)
-                # Se il nick e' uguale a quello di adesso
-                if string.lower(nmsg) == string.lower(cfg):
-                    # Parserizza la conf
-                    cfg_out = self.core.confparser(cfg_out, nick, "",
-                                                   channel, message, cfg)
+                nmsg = message.split()[0]
+                # Se il user e' uguale a quello di adesso
+                if nmsg.lower() == cfg[0].lower():
                     dictionary = {"\\n":"\n", "\\r":"\r", "\\001":"\001"}
                     cfg_out = self.core._replacer(dictionary, cfg_out)
                     while True:
@@ -78,13 +72,13 @@ class Manual:
                         if excfgt == cfg_out:
                             break
                     # Invia al server ogni riga scritta nel file di conf
-                    for splitted in cfg_out.split("\n"):
+                    for splitted in cfg_out.splitlines():
                         self.core.irc.sendLine(splitted)
         def xmsg(cfg_out, msg):
             """ Se nel file di conf si trova per esempio
             .message.[0:11]
             Lo cambia con le stringhe da 0 a 11 del messaggio inviato """
-            if cfg_out.find(".message.[") == -1:
+            if ".message.[" not in cfg_out:
                 return cfg_out
             xmessage = cfg_out.split(".message.[", 1)[1].split(
                 "].", 1)[0].split(":", 1)
@@ -94,13 +88,12 @@ class Manual:
             else:
                 xmend = len(msg)
             msg = msg[xmstart:xmend]
-            if msg.find(".message.[") != -1:
+            if ".message.[" in msg:
                 msg = "infinite loop protection"
             cfg_out = cfg_out.replace(".message.[%s:%s]."%(xmessage[0],
                                                            xmessage[1]), msg)
             return cfg_out
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
+        fromowners = self.core.channels.is_identified(user)
         # Se il file conf/openbot.manual esiste vedi la def manual
         if os.path.exists(self.manual_conf):
             manualdef()
@@ -115,4 +108,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os", "time", "string", "google"]
+__call__ = ["os", "time", "google"]

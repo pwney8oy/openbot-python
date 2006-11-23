@@ -28,11 +28,12 @@ class ConfParser:
         self.core.confparser = self.confparser
         self.uptime = time.time()
 
-    def confparser(self, cfg_out, nick, host="", chan="", msg="", cfg=""):
+    def chan_stats(self, stat):
+        stat.sort()
+        return ", ".join(stat), self.core._endreplacer(stat), len(stat)
+
+    def confparser(self, cfg_out, nick, chan="", msg="", host=""):
         " The base confparser function "
-        # Se trova .to. lo cambia con il nick a cui e' stato ordinato il mode
-        if len(cfg)+1 <= len(msg):
-            cfg_out = cfg_out.replace(".to.", msg[len(cfg)+1:])
         # .from. viene cambiato con il nick della persona che e' entrata in chan
         #   oppure con il nick della persona che ha scritto il messaggio
         # .botnick. viene cambiato col nick del bot
@@ -71,32 +72,16 @@ class ConfParser:
                                                             strerror), chan)
         if self.core.channels.is_in(chan):
             chans = self.core.channels
-            users = chans.users(chan)
-            users.sort()
-            usersnumber = str(len(users))
-            users_ = self.core._endreplacer(users)
-            users = ", ".join(users)
-            opers = chans.opers(chan)
-            opers.sort()
-            opersnumber = str(len(opers))
-            opers_ = self.core._endreplacer(opers)
-            opers = ", ".join(opers)
-            halfop = chans.halfop(chan)
-            halfop.sort()
-            halfopnumber = str(len(halfop))
-            halfop_ = self.core._endreplacer(halfop)
-            halfop = ", ".join(halfop)
-            voiced = chans.voiced(chan)
-            voiced.sort()
-            voicednumber = str(len(voiced))
-            voiced_ = self.core._endreplacer(voiced)
-            voiced = ", ".join(voiced)
+            users, users_, users_number = self.chan_stats(chans.users(chan))
+            opers, opers_, opers_number = self.chan_stats(chans.opers(chan))
+            halfop, halfop_, halfop_number = self.chan_stats(chans.halfop(chan))
+            voiced, voiced_, voiced_number = self.chan_stats(chans.voiced(chan))
             dictionary = {".users.":users, ".users_.":users_, ".opers.":opers, 
-                          ".usersnumber.":usersnumber, ".opers_.":opers_,
-                          ".opersnumber.":opersnumber, ".halfop.":halfop,
-                          ".halfop_.":halfop_, ".halfopnumber.":halfopnumber,
+                          ".users_number.":users_number, ".opers_.":opers_,
+                          ".opers_number.":opers_number, ".halfop.":halfop,
+                          ".halfop_.":halfop_, ".halfop_number.":halfop_number,
                           ".voiced.":voiced, ".voiced_.":voiced_,
-                          ".voicednumber.":voicednumber}
+                          ".voiced_number.":voiced_number}
             cfg_out = self.core._replacer(dictionary, cfg_out)
         return cfg_out
 

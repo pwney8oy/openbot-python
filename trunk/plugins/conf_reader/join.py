@@ -31,8 +31,7 @@ class Core:
     def _on_userJoined(self, user, channel):
         """Called when I see another user joining a channel.
         """
-        host = user
-        nick = user.split("!")[0]
+        print user
         if os.path.exists(self.join_conf):
             # Carica il file di configurazione
             conf = open(self.join_conf, "r")
@@ -50,17 +49,18 @@ class Core:
                     nel file si trasformano in \\n, vengono 
                     ritrasformate in \n, stessa cosa con \r
                     """
-                    scfg = cfg.replace("\\n", "\n").replace(
-                        "\\r", "\r").split("=", 1)
+                    dictionary = {"\\n":"\n", "\\r":"\r", "\\001":"\001"}
+                    scfg = self.core._replacer(dictionary, cfg)
+                    scfg = scfg.split("=", 1)
                     cfg = scfg[0]
                     # Avvia il confparser
-                    cfg = self.core.confparser(cfg, nick, host, channel)
+                    cfg = self.core.confparser(cfg, user, channel)
                     scfg = scfg[1]
-                    scfg = self.core.confparser(scfg, nick, host, channel)
-                    # Se la linea corrente combacia con il nick corrente
+                    scfg = self.core.confparser(scfg, user, channel)
+                    # Se la linea corrente combacia con il user corrente
                     # oppure
                     # Se la linea corrente è .all.
-                    if string.lower(cfg) in (string.lower(nick), ".all."):
+                    if cfg.lower() in (user.lower(), ".all."):
                         finshed = True
                         for xint in scfg.split("\n"):
                             self.core.irc.sendLine(xint)
@@ -71,4 +71,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os", "string"]
+__call__ = ["os"]

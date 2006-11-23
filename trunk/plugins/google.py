@@ -27,17 +27,17 @@ class Core:
         self.core = core
         self.core.call("privmsg", self._on_privmsg)
 
-    def resultSearch(self, result, nick, channel):
-        self.core.privmsg(channel, "%s: %s"%(nick, result))
+    def resultSearch(self, result, user, channel):
+        self.core.privmsg(channel, "%s: %s" % (user, result))
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
+        user = user.split("!")[0]
         if message.startswith("!google "):
             query = ' '.join(message.lstrip("!google ")).encode(self.core.ENCODING)
             check = twisted.web.google.checkGoogle(query)
-            check.addCallback(self.resultSearch, nick, channel)
+            check.addCallback(self.resultSearch, user, channel)
 
 def main(core):
     " Start the Plugin and load all the needed modules "

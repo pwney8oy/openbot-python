@@ -36,8 +36,8 @@ class Core:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
+        user = user.split("!")[0]
+        fromowners = self.core.channels.is_identified(user)
         # Se è stato inserito !quit il bot si disconnette con il motivo dato
         # Se non è stato dato un motivo userà quello di default: Requested
         message = message.split()
@@ -94,7 +94,7 @@ class Core:
                 check_quotes = []
                 num = 0
                 for quote_check in get_quote:
-                    if quote_check.find(check_string) != -1:
+                    if check_string.lower() in quote_check.lower():
                         check_quotes.append(num)
                     num += 1
                 if len(check_quotes) != 0:

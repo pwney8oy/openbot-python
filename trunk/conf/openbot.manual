@@ -1,6 +1,5 @@
 ciao .botnick.=PRIVMSG .chan. :Hey .from.\n
-!owner=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
-!owners=PRIVMSG .from. :Padrone:  .owner.\nPRIVMSG .from. :Genitori: RebelCoders\n
+!owner=PRIVMSG .from. :owner/s:  .owner.\nPRIVMSG .from. :openbot's website: http://ferraro.wordpress.com/\n
 !time=PRIVMSG .chan. :Time: .hours.:.minutes. (.seconds.s)\n
 !date=PRIVMSG .chan. :Date: .day./.month./.year.\n
 !say=PRIVMSG .chan. :.from.: .message.[5:].\n

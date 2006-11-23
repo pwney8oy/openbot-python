@@ -43,16 +43,16 @@ class Core:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
+        user = user.split("!")[0]
+        fromowners = self.core.channels.is_identified(user)
         if fromowners:
             command = ""
-            if message[:6] == "exec> ":
+            if message.startswith("exec> "):
                 command = commands.getoutput(message[6:])
-            elif message[:4] == "py> ":
+            elif message.startswith("py> "):
                 command = self.runcode(message[4:])
             if command != "":
-                for splitted_command in str(command).split("\n"):
+                for splitted_command in command.splitlines():
                     self.core.privmsg(channel, splitted_command)
 
 def main(core):

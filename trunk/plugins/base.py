@@ -31,8 +31,8 @@ class Core:
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
-        nick = user.split("!")[0]
-        fromowners = self.core.channels.is_identified(nick)
+        user = user.split("!")[0]
+        fromowners = self.core.channels.is_identified(user)
         if fromowners:
             # If the !quit has requested the bot disconnect with the date reason
             if message.startswith("!quit"):
@@ -45,12 +45,12 @@ class Core:
                 self.core.irc.join(message.lstrip("!join ").replace(" ", ""))
             elif message.startswith("!part "):
                 self.core.irc.leave(message.lstrip("!part ").replace(" ", ""))
-            elif message.startswith("!nick "):
-                self.core.irc.setNick(message.lstrip("!nick "))
+            elif message.startswith("!user "):
+                self.core.irc.setuser(message.lstrip("!user "))
             elif message.startswith("!send "):
                 send_to = message.split()
                 if len(send_to) < 3:
-                    self.core.privmsg(nick, "Usage: !send [to] [message]")
+                    self.core.privmsg(user, "Usage: !send [to] [message]")
                     return
                 message = ' '.join(send_to[2:])
                 self.core.privmsg(send_to[1], message)
