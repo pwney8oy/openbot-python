@@ -45,8 +45,8 @@ class Core:
                 self.core.irc.join(message.lstrip("!join ").replace(" ", ""))
             elif message.startswith("!part "):
                 self.core.irc.leave(message.lstrip("!part ").replace(" ", ""))
-            elif message.startswith("!user "):
-                self.core.irc.setuser(message.lstrip("!user "))
+            elif message.startswith("!nick "):
+                self.core.irc.setuser(message.lstrip("!nick "))
             elif message.startswith("!send "):
                 send_to = message.split()
                 if len(send_to) < 3:
