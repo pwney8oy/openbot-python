@@ -86,7 +86,7 @@ class Core:
                 savedata.write(newpeak)
                 savedata.close()
             # Informa in chan del nuovo peak
-            peak_message = "New peak of %s users, thank to %s" % (
+            peak_message = "New peak of %s users, thanks to %s" % (
                 str(usersnumber), nick)
             self.core.add2log(peak_message, channel)
             self.core.privmsg(channel, peak_message)

@@ -36,7 +36,6 @@ class Core:
         user = user.split("!")[0]
         if message.startswith("!google "):
             query = message.lstrip("!google ").encode(self.core.ENCODING)
-            print query
             check = twisted.web.google.checkGoogle(query)
             check.addCallback(self.resultSearch, user, channel)
 

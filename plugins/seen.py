@@ -85,7 +85,7 @@ class Core:
             user_channels = self.core.channels.get_users_channels(seen_user)
             if seen_user == user:
                 result = "I'm Mandrake, and who are you?"
-            elif seen_user == self.core.conf.botuser:
+            elif seen_user == self.core.conf.botnick:
                 result = "Don't joke me dude..."
             elif len(user_channels) != 0:
                 result = "%s is online (%s)"%(seen_user,
