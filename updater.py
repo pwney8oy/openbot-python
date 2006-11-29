@@ -21,8 +21,17 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 import os
+import sys
 import time
 import urllib
+
+help_message = """
+Usage: updater.py [OPTION]
+OPTIONS:
+       --ignore-conf    don't update conf files (conf/).
+       --help           print this message.
+"""
+ignore_conf = False
 
 def openurl(url):
     urlopen = urllib.urlopen("http://openbot-python.googlecode.com/svn/trunk/" + url)
@@ -40,37 +49,40 @@ def mkdir(path):
         os.mkdir(path)
     os.chdir(path)
 
+if len(sys.argv) > 0:
+    for argv in sys.argv:
+        if argv == "--ignore-conf":
+            ignore_conf = True
+        elif argv == "--help":
+            print help_message
+            sys.exit()
+
 print "- Downloading openbot core..."
 openurl("openbot.py")
 openurl("openbot.tac")
 openurl("channels.py")
 openurl("conf.py")
 
-
 mkdir("library")
-
 print "- Downloading Libraries..."
 openurl("library/feedparser.py")
 openurl("library/utils.py")
 
-
 os.chdir("..")
 
-mkdir("conf")
-
-print "- Downloading conf files...."
-openurl("conf/openbot.commands")
-openurl("conf/openbot.join")
-openurl("conf/openbot.manual")
-openurl("conf/openbot.modes")
-openurl("conf/openbot.owner.commands")
-openurl("conf/openbot.owner.manual")
-
+if not ignore_conf:
+    mkdir("conf")
+    print "- Downloading conf files...."
+    openurl("conf/openbot.commands")
+    openurl("conf/openbot.join")
+    openurl("conf/openbot.manual")
+    openurl("conf/openbot.modes")
+    openurl("conf/openbot.owner.commands")
+    openurl("conf/openbot.owner.manual")
 
 os.chdir("..")
 
 mkdir("plugins")
-
 print "- Downloading plugins..."
 openurl("plugins/base.py")
 openurl("plugins/google.py")
