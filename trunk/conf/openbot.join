@@ -1,7 +1,9 @@
+# Personali
 luX`=PRIVMSG .chan. :Welcome master, I'm here to serve you\n
 amds=PRIVMSG .chan. :Ecco a tutti .from., la nostra ****** ******** number 1\n
 slupz=PRIVMSG .chan. :We .from., da quanto tempo!!\n
 bayle=PRIVMSG .chan. :Cia .from. :)\n
 sk1l=PRIVMSG .chan. :Benvenuto .from., il mio picciotto numero uno!\n
 petdog=PRIVMSG .chan. :Bau, grr\n
+# .all. viene usato solo se l'utente non si trova fra tutti gli altri
 .all.=PRIVMSG .chan. :Welcome .from..\n

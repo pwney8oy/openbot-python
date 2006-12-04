@@ -40,6 +40,9 @@ class Modes:
             rows_number = 0
             # Avvia un ciclo che legge ogni riga nel file di conf
             for cfg in conf.readlines():
+                # Se la riga inizia con # la ignora e passa a quella dopo
+                if cfg[0] == "#":
+                    continue
                 rows_number += 1
                 cfg = cfg.strip().split("=", 1)
                 try:

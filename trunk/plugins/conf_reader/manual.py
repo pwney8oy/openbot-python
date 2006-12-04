@@ -56,6 +56,9 @@ class Manual:
                     return error
             # Avvia un ciclo che legge tutte le righe nel file di conf
             for cfg in conf.readlines():
+                # Se la riga inizia con # la ignora e passa a quella dopo
+                if cfg[0] == "#":
+                    continue
                 # Parserizza il conf
                 cfg = self.core.confparser(cfg.strip(), user, channel)
                 cfg = cfg.strip().split("=", 1)
