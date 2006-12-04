@@ -25,12 +25,10 @@ import sys
 import time
 import urllib
 
-help_message = """
-Usage: updater.py [OPTION]
+help_message = """Usage: updater.py [OPTION]
 OPTIONS:
        --ignore-conf    don't update conf files (conf/).
-       --help           print this message.
-"""
+       --help           print this message."""
 ignore_conf = False
 
 def openurl(url):

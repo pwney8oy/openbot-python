@@ -31,7 +31,6 @@ class Core:
     def _on_userJoined(self, user, channel):
         """Called when I see another user joining a channel.
         """
-        print user
         if os.path.exists(self.join_conf):
             # Carica il file di configurazione
             conf = open(self.join_conf, "r")
@@ -39,6 +38,9 @@ class Core:
             rows_number = 0
             # Legge il file di conf e avvia il ciclo per ogni linea
             for cfg in conf.readlines():
+                # Se la riga inizia con # la ignora e passa a quella dopo
+                if cfg[0] == "#":
+                    continue
                 if not finshed:
                     rows_number += 1
                     if cfg.find("=") == -1:

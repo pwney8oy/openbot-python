@@ -99,11 +99,11 @@ class Core:
         """
         self.add2log((" %s is now known as %s\n" % (oldname, newname)).strip())
 
-    def _on_userLeft(self, channel):
+    def _on_userLeft(self, user, channel):
         """Called when I see another user leaving a channel.
         """
         self.add2log((" %s has part %s\n" % (
-            user, host, channel)).strip(), channel)
+            user, channel)).strip(), channel)
 
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
