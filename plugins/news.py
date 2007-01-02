@@ -27,38 +27,15 @@ class Core:
         self.core = core
         self.core.call("privmsg", self._on_privmsg)
 
-    def get_one_news(self, url, number, rss_name):
-        rss = feedparser.parse(url)
-        entry = rss.entries[number]
-        result = rss_name
-        try:
-            result += "%s (%s): %s" % (entry.title, entry.link,
-                                       entry.description)
-        except:
-            result += "%s (%s): no description found" % (
-                entry.title, entry.link)
-        return result
-
-    def get_news(self, url, rss_name):
-        rss = feedparser.parse(url)
-        entries = rss.entries[0:5]
-        cont, result = 0, rss_name
-        for entry in entries:
-            cont += 1
-            result += "%s (%s)" % (entry.title, cont)
-            if cont != 5:
-                result += " - "
-        return result
-
     def _on_privmsg(self, user, channel, message):
         """Called when I have a message from a user to me or a channel.
         """
         def call(url, name):
             name += " :: "
             if require:
-                result = self.get_one_news(url, require-1, name)
+                result = utils.get_one_rss(url, require-1, name, feedparser)
             else:
-                result = self.get_news(url, name)
+                result = utils.get_rss(url, name, feedparser)
             result = result.encode("utf-8")
             if len(result) > 433:
                 result = result[:430] + "..."
@@ -77,7 +54,8 @@ class Core:
             except ValueError:
                 require = False
         else: require = False
-        if (len(message) > 1) and (message[0] == "!news"):
+        if (len(message) > 1) and (message[0].lower() == "!news"):
+            message[1] = message[1].lower()
             if RSS.has_key(message[1]):
                 call(RSS[message[1]], message[1])
             else:
@@ -91,4 +69,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["feedparser"]
+__call__ = ["feedparser", "utils"]

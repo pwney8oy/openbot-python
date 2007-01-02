@@ -6,4 +6,4 @@
 !addquote [quote] = in chan: aggiunge ai quote [quote] || !randquote = in chan: ritorna un quote casuale || !getquote [numero] = in chan: ritorna il quote numero [numero]
 !news list = in chan: lista dei siti news || !news [nome] = in chan: ritorna le news di [nome] || !news [nome] [numero] = in chan: ritorna l'url, il titolo e la descrizione della news [numero] su [nome]
 !incula nick = in chan action: il bot incula [nick] || !inculap nick = in chan action: il bot viene inculato da [nick] || !seen nick = in chan: ritorna l'ultima volta che il bot ha visto [nick]
-!uptime = in privato: ritorna il tempo passato dall'avvio dell'OpenBot
+!uptime = in privato: ritorna il tempo passato dall'avvio dell'OpenBot || !weather [citta'] = in chan: ritorna il tempo e i gradi di [citta']
