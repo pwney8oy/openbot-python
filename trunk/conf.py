@@ -56,8 +56,6 @@ class Config:
             conf = conf[0]
             if conf in self.variables:
                 if conf in ("verbose", "logs", "port"):
-                    print value
-                    print conf
                     value = int(value)
                 setattr(self, "_" + conf, value)
                 if conf == "botnick":

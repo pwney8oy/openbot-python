@@ -92,6 +92,27 @@ def _get_input(answer, conditions=0, type="raw_input"):
             conditions = False
         return [userinput, conditions]
 
+def get_one_rss(url, number, rss_name, feedparser):
+    rss = feedparser.parse(url)
+    entry = rss.entries[number]
+    result = rss_name
+    try:
+        result += "%s: %s" % (entry.title, entry.description)
+    except:
+        result += "%s: no description found" % (entry.title)
+    return result
+
+def get_rss(url, rss_name, feedparser):
+    rss = feedparser.parse(url)
+    entries = rss.entries[0:5]
+    cont, result = 0, rss_name
+    for entry in entries:
+        cont += 1
+        result += "%s (%s)" % (entry.title, cont)
+        if cont != 5:
+            result += " - "
+    return result
+
 def walk():
     " Walk the plugins directory, then set self.plugins with all .py files "
     global plugins
