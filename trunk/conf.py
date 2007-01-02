@@ -23,7 +23,7 @@
 " Configure the Bot "
 import os
 import sys
-import utils
+from library import utils
 import random
 
 class Config:
@@ -32,87 +32,78 @@ class Config:
     Chiede tutti i dati all'utente
     Altrimenti:
     Prende i dati dal file conf/openbot.main"""
-    #TODO: RISCRIVERE PARZIALMENTE
-    #TODO: USARE library.utils._add_conf
-    if os.path.exists("conf"):
-        # Se esiste la dir conf/
-        confdir = "conf/"
-        maindir = ""
-    else:
-        print " -!ERROR!- conf/ and ~/conf don't exists\n"
-        sys.exit()
-    if not os.path.exists(confdir+"openbot.main"):
-        # Se e' la prima volta che si avvia il bot
-        # Chiede tutti i dati necessari
-        _host = raw_input(str("NetWork [irc.freenode.org]: "))
-        if len(_host) <= 5:
-            _host = "irc.freenode.org"
-        _port = raw_input(str("Port [6667]: "))
-        if len(str(_port)) <= 2:
-            _port = 6667
-        _verbose = raw_input(str("Verbose (0/1)[1]: "))
-        if _verbose != "0":
-            _verbose = 1
+    def __init__(self):
+        self.variables = ("host", "port", "verbose", "logs", "botnick", "password", 
+        "ns_password", "chans")
+        if os.path.exists("conf"):
+            # Se esiste la dir conf/
+            self.confdir = "conf/"
+            self.maindir = ""
         else:
-            _verbose = 0
-        _logs = raw_input(str("Logs (0/1)[1]: "))
-        if _logs != "0":
-            _logs = 1
+            print "Error: conf/ and ~/conf don't exists\n"
+            sys.exit()
+        if not os.path.exists(self.confdir+"openbot.main"):
+            # Se e' la prima volta che si avvia il bot
+            self.new_conf()
         else:
-            _logs = 0
-        random_nick = "oBot"+str(random.randrange(0, 9999))
-        _botnick = firstbotnick = raw_input(str(
-            "Bot's nick [%s]: "%(random_nick)))
-        if _botnick == "":
-            _botnick = firstbotnick = random_nick
-        _ns_password = raw_input(str(
-            "NickServe Password (blank for none): "))
-        _password = ""
-        while _password == "":
-            _password = raw_input(str("Bot identify Password: "))
-        _chans = raw_input(str(
-            "Channels to join [#rebelcode,#rebeltest]: "))
-        if _chans == "":
-            _chans = "#rebelcode,#rebeltest"
-        saveconf = open(confdir+"openbot.main", "w")
-        newconf = str("host=%s\nport=%s\nverbose=%s\nlogs=%s" \
-                      "\nbotnick=%s\npassword=%s\nns_password=%s" \
-                      "\nchans=%s"%(_host, _port, _verbose,
-                                     _logs, _botnick,
-                                     _password, _ns_password,
-                                     _chans))
-        saveconf.write(newconf)
-        saveconf.close()
-    else: # Se il file di conf gia' esiste
-        openconf = open(confdir+"openbot.main", "r") # Apre il file di conf
-        for conf in openconf.readlines():
-            # Prende tutti i dati dal file di conf
-            conf = conf.strip("\n").split("=", 1)
+            # Se il file di conf gia' esiste
+            self.open_conf()
+    def open_conf(self):
+        for conf in utils._conf_parser(self.confdir+"openbot.main"):
+            if len(conf) != 2:
+                continue
             value = conf[1]
             conf = conf[0]
-            if (conf == "host") and (value != ""):
-                _host = value
-            elif (conf == "port") and (value != ""):
-                _port = int(value)
-            elif (conf == "verbose") and ((value == "0") or (value == "1")):
-                _verbose = int(value)
-            elif (conf == "logs") and ((value == "0") or (value == "1")):
-                _logs = int(value)
-            elif (conf == "botnick") and (value != ""):
-                _botnick = firstbotnick = value
-            elif conf == "password":
-                _password = value
-            elif conf == "ns_password":
-                if value == None:
-                    _ns_password = None
-                else:
-                    _ns_password = value
-            elif (conf == "chans") and (value != ""):
-                _chans = value
-        openconf.close()
+            if conf in self.variables:
+                if conf in ("verbose", "logs", "port"):
+                    print value
+                    print conf
+                    value = int(value)
+                setattr(self, "_" + conf, value)
+                if conf == "botnick":
+                    self.firstbotnick = value
+            else:
+                print conf + ": UNKNOW VARIABLE"
+    def new_conf(self):
+        # Chiede tutti i dati necessari
+        self._host, condition = utils._get_input("NetWork [irc.freenode.org]: ", 
+        "len(a) <= 4")
+        if condition:
+            self._host = "irc.freenode.org"
+        self._port, condition = utils._get_input("Port [6667]: ", 
+        "(len(a) <= 2) and (a != '') and (int(a) != 0)")
+        if condition:
+            self._port = 6667
+        self._verbose, condition = utils._get_input("Verbose (0/1)[1]: ", 
+        "a")
+        if condition:
+            self._verbose = 1
+        else:
+            self._verbose = 0
+        self._logs, condition = utils._get_input("Logs (0/1)[1]: ", 
+        "a")
+        if condition:
+            self._logs = 1
+        else:
+            self._logs = 0
+        random_nick = "oBot"+str(random.randrange(0, 9999))
+        self._botnick, condition = utils._get_input(
+        "Bot's nick ["+random_nick+"]: ", "a == ''")
+        if condition:
+            self._botnick = random_nick
+        self.firstbotnick = self._botnick
+        self._ns_password, b = utils._get_input(
+        "NickServe Password [blank for none]: ")
+        self._password = ""
+        while self._password == "":
+            self._password, b = utils._get_input("Bot identify Password: ")
+        self._chans, b = utils._get_input("Channels to join [blank for none]: ")
+        for conf_arg in self.variables:
+            utils._add_conf(self.confdir+"openbot.main", str(conf_arg), 
+            str(getattr(self, "_" + conf_arg)))
     try:
-        variables = ("host", "port", "verbose", "logs", "botnick",
-                     "password", "ns_password", "chans")
+        variables = ("host", "port", "verbose", "logs", "botnick", 
+        "password", "ns_password", "chans")
         for var in variables:
             utils.create_property(var)
     except: # Se si e' sollevata un'eccezione
