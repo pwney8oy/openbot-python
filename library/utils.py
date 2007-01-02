@@ -36,8 +36,24 @@ def _add_conf(conf_file, *args):
                 old_conf += '='.join(line)
         open_file.close()
     open_file = open(conf_file, "w")
-    open_file.write(old_conf+'='.join(args))
+    open_file.write(old_conf + '='.join(args) + "\n")
     open_file.close()
+
+def _conf_parser(conf_file, args_for_value=1):
+    """
+    conf_file = string with file to open
+    [args_for_value] = int with numbers of max args for value (0 for no limit)
+    """
+    openconf = open(conf_file, "r") # Apre il file di conf
+    conf_list = []
+    for conf in openconf.readlines():
+        # Prende tutti i dati dal file di conf
+        if args_for_value:
+            conf_list.append(conf.strip("\n").split("=", args_for_value))
+        else:
+            conf_list.append(conf.strip("\n").split("="))
+    openconf.close()
+    return conf_list
 
 def _endreplacer(start_string, string2add="_"):
     """ Data lista di stringhe (start_string)
@@ -53,6 +69,28 @@ def _replacer(dictionary, string2edit):
         string2edit = string2edit.replace(str(to_replace),
                                           str(dictionary[to_replace]))
     return string2edit
+
+def _get_input(answer, conditions=0, type="raw_input"):
+    """
+    Usage:
+      _get_input ( answer , [conditions] , [type] )
+    Example:
+      _get_input ( "0 is 0?" , "a == 'yes'" )
+        will return ['yes', True] or [userinput, False]
+    Example2:
+      _get_input ( "Your name?" )
+        will return [userinput, False]
+    """
+    if type == "raw_input":
+        userinput = a = raw_input(str(answer))
+        try:
+            if eval(conditions) not in [True, False]:
+                conditions = False
+            else:
+                conditions = True
+        except:
+            conditions = False
+        return [userinput, conditions]
 
 def walk():
     " Walk the plugins directory, then set self.plugins with all .py files "
