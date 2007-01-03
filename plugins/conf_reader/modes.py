@@ -54,9 +54,9 @@ class Modes:
                     self.core.add2log("-!ERROR!- %s: Line %s"%(
                         self.modes_conf, str(rownumber)))
                     continue
-                if message[:len(cfg)] == cfg:
-                    cfg_out = self.core.confparser(cfg_out, user, "", channel,
-                                                   message, cfg).strip()
+                if message.split()[0] == cfg:
+                    cfg_out = self.core.confparser(cfg_out, user, channel,
+                                                   message).strip()
                     set = cfg_out[0]
                     if set == "+":
                         set = True
