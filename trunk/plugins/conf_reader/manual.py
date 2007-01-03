@@ -60,7 +60,7 @@ class Manual:
                 if cfg[0] == "#":
                     continue
                 # Parserizza il conf
-                cfg = self.core.confparser(cfg.strip(), user, channel)
+                cfg = self.core.confparser(cfg.strip(), user, channel, message)
                 cfg = cfg.strip().split("=", 1)
                 cfg_out = cfg[1]
                 nmsg = message.split()[0]
@@ -68,34 +68,9 @@ class Manual:
                 if nmsg.lower() == cfg[0].lower():
                     dictionary = {"\\n":"\n", "\\r":"\r", "\\001":"\001"}
                     cfg_out = self.core._replacer(dictionary, cfg_out)
-                    while True:
-                        # Vedi xmsg
-                        excfgt = cfg_out
-                        cfg_out = xmsg(cfg_out, message)
-                        if excfgt == cfg_out:
-                            break
                     # Invia al server ogni riga scritta nel file di conf
                     for splitted in cfg_out.splitlines():
                         self.core.irc.sendLine(splitted)
-        def xmsg(cfg_out, msg):
-            """ Se nel file di conf si trova per esempio
-            .message.[0:11]
-            Lo cambia con le stringhe da 0 a 11 del messaggio inviato """
-            if ".message.[" not in cfg_out:
-                return cfg_out
-            xmessage = cfg_out.split(".message.[", 1)[1].split(
-                "].", 1)[0].split(":", 1)
-            xmstart = int(xmessage[0])
-            if xmessage[1] != "":
-                xmend = int(xmessage[1])
-            else:
-                xmend = len(msg)
-            msg = msg[xmstart:xmend]
-            if ".message.[" in msg:
-                msg = "infinite loop protection"
-            cfg_out = cfg_out.replace(".message.[%s:%s]."%(xmessage[0],
-                                                           xmessage[1]), msg)
-            return cfg_out
         fromowners = self.core.channels.is_identified(user)
         # Se il file conf/openbot.manual esiste vedi la def manual
         if os.path.exists(self.manual_conf):

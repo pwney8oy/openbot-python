@@ -32,6 +32,26 @@ class ConfParser:
         stat.sort()
         return ", ".join(stat), self.core._endreplacer(stat), len(stat)
 
+    def message_parser(self, cfg_out, msg):
+        """ Se nel file di conf si trova per esempio
+        .message.[0:11]
+        Lo cambia con le stringhe da 0 a 11 del messaggio inviato """
+        if ".message.[" not in cfg_out:
+            return cfg_out
+        xmessage = cfg_out.split(".message.[", 1)[1].split(
+            "].", 1)[0].split(":", 1)
+        xmstart = int(xmessage[0])
+        if xmessage[1] != "":
+            xmend = int(xmessage[1])
+        else:
+            xmend = len(msg)
+        msg = msg[xmstart:xmend]
+        if ".message.[" in msg:
+            msg = "infinite loop protection"
+        cfg_out = cfg_out.replace(".message.[%s:%s]."%(xmessage[0],
+                                                        xmessage[1]), msg)
+        return cfg_out
+
     def confparser(self, cfg_out, nick, chan="", msg="", host=""):
         " The base confparser function "
         # .from. viene cambiato con il nick della persona che e' entrata in chan
@@ -83,6 +103,11 @@ class ConfParser:
                           ".voiced.":voiced, ".voiced_.":voiced_,
                           ".voiced_number.":voiced_number}
             cfg_out = self.core._replacer(dictionary, cfg_out)
+        while True:
+            excfgt = cfg_out
+            cfg_out = self.message_parser(cfg_out, msg)
+            if excfgt == cfg_out:
+                break
         return cfg_out
 
 def main(core):

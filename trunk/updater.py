@@ -91,6 +91,7 @@ openurl("plugins/quote.py")
 openurl("plugins/private_identifier.py")
 openurl("plugins/syscmd.py")
 openurl("plugins/seen.py")
+openurl("plugins/weather.py")
 
 mkdir("core_plugin")
 openurl("plugins/core_plugin/confparser.py")
