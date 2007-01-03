@@ -65,6 +65,7 @@ mkdir("library")
 print "- Downloading Libraries..."
 openurl("library/feedparser.py")
 openurl("library/utils.py")
+openurl("library/__init__.py")
 
 os.chdir("..")
 
