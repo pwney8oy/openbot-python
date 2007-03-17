@@ -37,6 +37,8 @@ sys.path.append('library')
 import utils
 from channels import Channels
 from conf import Config
+from library.utils import messages as send
+send = send()
 
 __version__ = "0.0.05a"
 __delay__ = 1.5
@@ -175,7 +177,6 @@ class Core(irc.IRCClient):
         """Called when my nick has been changed.
         """
         self.factory.conf.botnick = nick
-        print nick
         self.connect("nickChanged", (nick))
 
     ### Things I observe other people doing in a channel.
@@ -284,7 +285,7 @@ class OpenBot(protocol.ClientFactory):
             reactor.stop()
 
     def clientConnectionFailed(self, connector, reason):
-        print "connection failed: ", reason
+        send.error("Connection Failed: ", reason)
         reactor.stop()
 
     def connect(self):
