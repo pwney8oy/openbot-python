@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 ############################################################################
-#    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(luciano.ferraro@gmail.com)        #
+#    Copyright (C) 2005-206                                                #
+#                       Author: Luciano Ferraro                            #
+#                               email: luciano.ferraro@gmail.com           #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -27,13 +28,33 @@ import sys
 module = {}
 
 class messages:
+    def __init__(self):
+        self.set_stdout(None)
+    def set_stdout(self, stdout):
+        self.stdout = stdout
     def normal(self, message):
-        print "[--] %s" % message
+        data = "[--] %s" % message
+        if self.stdout != None:
+            self.stdout(data)
+            return
+        print data
     def warning(self, message):
+        data = "[Warning] %s" % message
+        if self.stdout != None:
+            self.stdout(data)
+            return
         print "[Warning] %s" % message
     def error(self, message):
+        data = "[ERROR] %s" % message
+        if self.stdout != None:
+            self.stdout(data)
+            return
         print "[ERROR] %s" % message
     def system(self, message):
+        data = "[**] %s" % message
+        if self.stdout != None:
+            self.stdout(data)
+            return
         print "[**] %s" % message
 send = messages()
 
@@ -193,7 +214,8 @@ def load_plugins(startdir, self):
     for plugin in plugins:
         sys.path.append(startdir+os.path.split(plugin)[0])
         plugin_name = os.path.split(plugin)[1].replace(".py", "")
-        sys.stdout.write(plugin_name)
+        send.set_stdout(sys.stdout.write)
+        send.system("Plugin: " + plugin_name)
         plugin = __import__(plugin_name)
         try:
             for module in plugin.__call__:
@@ -206,6 +228,7 @@ def load_plugins(startdir, self):
             sys.stdout.write(" [OK]\n")
         except:
             sys.stdout.write(" [FAILED]\n")
+        send.set_stdout(None)
     os.chdir(startdir)
  
 def _create_get_property(property_name):

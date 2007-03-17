@@ -75,14 +75,12 @@ class Config:
             self._port = 6667
         else:
             self._port = int(self._port)
-        self._verbose, condition = utils._get_input("Verbose (0/1)[1]: ", 
-        "a")
+        self._verbose, condition = utils._get_input("Verbose (0/1)[1]: ", "a")
         if not condition:
             self._verbose = 1
         else:
             self._verbose = 0
-        self._logs, condition = utils._get_input("Logs (0/1)[1]: ", 
-        "a")
+        self._logs, condition = utils._get_input("Logs (0/1)[1]: ", "a")
         if not condition:
             self._logs = 1
         else:
