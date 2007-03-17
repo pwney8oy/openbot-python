@@ -26,6 +26,17 @@ import sys
 
 module = {}
 
+class messages:
+    def normal(self, message):
+        print "[--] %s" % message
+    def warning(self, message):
+        print "[Warning] %s" % message
+    def error(self, message):
+        print "[ERROR] %s" % message
+    def system(self, message):
+        print "[**] %s" % message
+send = messages()
+
 def _add_conf(conf_file, *args):
     old_conf = ""
     if os.path.exists(conf_file):
@@ -87,7 +98,7 @@ def _get_input(answer, conditions=0, type="raw_input"):
             if eval(conditions) not in [True, False]:
                 conditions = False
             else:
-                conditions = True
+                conditions = eval(conditions)
         except:
             conditions = False
         return [userinput, conditions]
@@ -178,7 +189,7 @@ def load_plugins(startdir, self):
     global plugins
     plugins = []
     walk()
-    print "-- Loading Plugins --"
+    send.system("Loading Plugins...")
     for plugin in plugins:
         sys.path.append(startdir+os.path.split(plugin)[0])
         plugin_name = os.path.split(plugin)[1].replace(".py", "")
