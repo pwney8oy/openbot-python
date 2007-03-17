@@ -24,6 +24,7 @@
 import os
 import sys
 from library import utils
+from library.utils import messages as send
 import random
 
 class Config:
@@ -40,7 +41,7 @@ class Config:
             self.confdir = "conf/"
             self.maindir = ""
         else:
-            print "Error: conf/ and ~/conf don't exists\n"
+            send.error("Error: conf/ and ~/conf doesn't exists\n")
             sys.exit()
         if not os.path.exists(self.confdir+"openbot.main"):
             # Se e' la prima volta che si avvia il bot
@@ -61,7 +62,7 @@ class Config:
                 if conf == "botnick":
                     self.firstbotnick = value
             else:
-                print conf + ": UNKNOW VARIABLE"
+                send.warning(conf + ": UNKNOW VARIABLE")
     def new_conf(self):
         # Chiede tutti i dati necessari
         self._host, condition = utils._get_input("NetWork [irc.freenode.org]: ", 
@@ -69,18 +70,20 @@ class Config:
         if condition:
             self._host = "irc.freenode.org"
         self._port, condition = utils._get_input("Port [6667]: ", 
-        "(len(a) <= 2) and (a != '') and (int(a) != 0)")
-        if condition:
+        "(len(a) >= 2) and (a != '') and (int(a) != 0)")
+        if not condition:
             self._port = 6667
+        else:
+            self._port = int(self._port)
         self._verbose, condition = utils._get_input("Verbose (0/1)[1]: ", 
         "a")
-        if condition:
+        if not condition:
             self._verbose = 1
         else:
             self._verbose = 0
         self._logs, condition = utils._get_input("Logs (0/1)[1]: ", 
         "a")
-        if condition:
+        if not condition:
             self._logs = 1
         else:
             self._logs = 0
@@ -105,5 +108,5 @@ class Config:
         for var in variables:
             utils.create_property(var)
     except: # Se si e' sollevata un'eccezione
-        print confdir+"openbot.main isn't a valid config file"
+        send.error(confdir+"openbot.main isn't a valid config file")
         sys.exit()

@@ -1,1 +1,1 @@
-__all__ = ['feedparser', 'utils']
+__all__ = ['feedparser', 'utils', 'handler']
