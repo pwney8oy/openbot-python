@@ -32,8 +32,6 @@ OPTIONS:
        --ignore-conf    don't update conf files (conf/).
        --help           print this message."""
         self.ignore_conf = False
-        self.read_argv()
-        self.start_update()
 
     def openurl(self, url):
         urlopen = urllib.urlopen("http://openbot-python.googlecode.com/svn/trunk/" + url)
@@ -60,41 +58,45 @@ OPTIONS:
                     print self.help_message
                     sys.exit()
 
-    def start_update(self)
+    def start_update(self):
         print "- Downloading openbot core..."
         for url in ("openbot.py", "openbot.tac", "channels.py", "conf.py"):
-            openurl(url)
-        mkdir("library")
+            self.openurl(url)
+        self.mkdir("library")
         ####
         print "- Downloading Libraries..."
         for url in ("feedparser.py", "utils.py", "__init__.py"):
-            openurl("library/" + url)
+            self.openurl("library/" + url)
         ####
         os.chdir("..")
         if not self.ignore_conf:
-            mkdir("conf")
+            self.mkdir("conf")
             print "- Downloading conf files...."
             for url in ("openbot.commands", "openbot.join", "openbot.manual", 
             "openbot.modes", "openbot.owner.commands", "openbot.owner.manual"):
-                openurl("conf/" + url)
+                self.openurl("conf/" + url)
             os.chdir("..")
         ####
-        mkdir("plugins")
+        self.mkdir("plugins")
         print "- Downloading plugins..."
         for url in ("base.py", "google.py", "news.py", "logs.py", "peak.py", 
         "quote.py", "private_identifier.py", "syscmd.py", "seen.py", "weather.py"):
-            openurl("plugins/" + url)
+            self.openurl("plugins/" + url)
         ####
-        mkdir("core_plugin")
-        openurl("plugins/core_plugin/confparser.py")
-        openurl("plugins/core_plugin/welcome_message.py")
+        self.mkdir("core_plugin")
+        self.openurl("plugins/core_plugin/confparser.py")
+        self.openurl("plugins/core_plugin/welcome_message.py")
         ####
         os.chdir("..")
-        mkdir("conf_reader")
-        for url in ("_commands.py", "join.py", "manual.py", "modes.py")
-            openurl("plugins/conf_reader/" + url)
+        self.mkdir("conf_reader")
+        for url in ("_commands.py", "join.py", "manual.py", "modes.py"):
+            self.openurl("plugins/conf_reader/" + url)
         ####
         os.chdir("../..")
-        mkdir("data")
+        self.mkdir("data")
         ####
         print "- Installation finished, run openbot.py with Python for use it (`python openbot.py`"
+
+core = Core()
+core.read_argv()
+core.start_update()
