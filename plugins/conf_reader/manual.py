@@ -39,7 +39,7 @@ class Manual:
             #  carica openbot.owner.manual
             if owner:
                 try:
-                    conf = open(self.owner_manual_conf, "r")
+                    conf = library.utils._conf_parser(self.owner_manual_conf)
                 except IOError, (errno, strerror):
                     error = "I/O error %s(%s): %s" % (self.owner_manual_conf, 
                                                       errno, strerror)
@@ -48,28 +48,26 @@ class Manual:
             # Altrimenti carica openbot.manual
             else:
                 try:
-                    conf = open(self.manual_conf, "r")
+                    conf = library.utils._conf_parser(self.manual_conf)
                 except IOError, (errno, strerror):
                     error = "I/O error %s(%s): %s" % (self.manual_conf,
                                                       errno, strerror)
                     self.core.add2log(error)
                     return error
             # Avvia un ciclo che legge tutte le righe nel file di conf
-            for cfg in conf.readlines():
-                # Se la riga inizia con # la ignora e passa a quella dopo
-                if cfg[0] == "#":
-                    continue
+            for cfg in conf:
                 # Parserizza il conf
-                cfg = self.core.confparser(cfg.strip(), user, channel, message)
-                cfg = cfg.strip().split("=", 1)
-                cfg_out = cfg[1]
+                cfg[0] = cfg[0].strip()
+                cfg[0] = self.core.confparser(cfg[0], user, channel, message)
+                cfg[1] = cfg[1].strip()
+                cfg[1] = self.core.confparser(cfg[1], user, channel, message)
                 nmsg = message.split()[0]
-                # Se il user e' uguale a quello di adesso
+                # Se l'user e' uguale a quello di adesso
                 if nmsg.lower() == cfg[0].lower():
                     dictionary = {"\\n":"\n", "\\r":"\r", "\\001":"\001"}
-                    cfg_out = self.core._replacer(dictionary, cfg_out)
+                    cfg[1] = self.core._replacer(dictionary, cfg[1])
                     # Invia al server ogni riga scritta nel file di conf
-                    for splitted in cfg_out.splitlines():
+                    for splitted in cfg[1].splitlines():
                         self.core.irc.sendLine(splitted)
         fromowners = self.core.channels.is_identified(user)
         # Se il file conf/openbot.manual esiste vedi la def manual
@@ -86,4 +84,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os", "time", "google"]
+__call__ = ["os", "time", "library", "library.utils"]

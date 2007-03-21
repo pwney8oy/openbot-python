@@ -36,28 +36,27 @@ class Modes:
         if (fromowners) and (os.path.exists(self.modes_conf)):
             # Se il padrone ha scritto qualcosa
             # Carica il file di configurazione dei modi
-            conf = open(self.modes_conf, "r")
+            conf = library.utils._conf_parser(self.modes_conf)
             rows_number = 0
             # Avvia un ciclo che legge ogni riga nel file di conf
-            for cfg in conf.readlines():
-                # Se la riga inizia con # la ignora e passa a quella dopo
-                if cfg[0] == "#":
-                    continue
+            for cfg in conf:
                 rows_number += 1
-                cfg = cfg.strip().split("=", 1)
-                try:
-                    error = False
-                    cfg_out = cfg[1]
-                    cfg = cfg[0]
-                except:
-                    error = True
-                    self.core.add2log("-!ERROR!- %s: Line %s"%(
-                        self.modes_conf, str(rownumber)))
-                    continue
-                if message.split()[0] == cfg:
-                    cfg_out = self.core.confparser(cfg_out, user, channel,
+                cfg[0] = cfg[0].strip()
+                cfg[1] = cfg[1].strip()
+                # Parzialmente incluso in utils._conf_parser
+                #try:
+                #    error = False
+                #    cfg_out = cfg[1]
+                #    cfg = cfg[0]
+                #except:
+                #    error = True
+                #    self.core.add2log("-!ERROR!- %s: Line %s"%(
+                #        self.modes_conf, str(rownumber)))
+                #    continue
+                if message.split()[0] == cfg[0]:
+                    cfg[1] = self.core.confparser(cfg[1], user, channel,
                                                    message).strip()
-                    set = cfg_out[0]
+                    set = cfg[1][0]
                     if set == "+":
                         set = True
                     elif set == "-":
@@ -66,12 +65,12 @@ class Modes:
                         self.core.add2log("-!ERROR!- %s: Line %s"%(
                             self.modes_conf, str(rownumber)))
                         continue
-                    user = cfg_out.split()
+                    user = cfg[1].split()
                     if len(user) > 1:
                         user = user[1]
                     else:
                         user = None
-                    self.core.irc.mode(channel, set, cfg_out[1:], user=user)
+                    self.core.irc.mode(channel, set, cfg[1][1:], user=user)
 
 def main(core):
     " Start the Plugin and load all the needed modules "
@@ -79,4 +78,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os"]
+__call__ = ["os", "library", "library.utils"]

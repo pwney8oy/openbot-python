@@ -32,39 +32,32 @@ class Core:
         """Called when I see another user joining a channel.
         """
         if os.path.exists(self.join_conf):
-            # Carica il file di configurazione
-            conf = open(self.join_conf, "r")
-            finshed = False
+            concluted = False
             rows_number = 0
             # Legge il file di conf e avvia il ciclo per ogni linea
-            for cfg in conf.readlines():
-                # Se la riga inizia con # la ignora e passa a quella dopo
-                if cfg[0] == "#":
-                    continue
-                if not finshed:
+            for cfg in library.utils._conf_parser(self.join_conf):
+                if not concluted:
                     rows_number += 1
-                    if cfg.find("=") == -1:
-                        self.core.add2log("-!ERROR!- %s: Line %s"%(
-                            self.join_conf, str(rows_number)))
-                        continue
+                    # Incluso in utils._conf_parser
+                    #if cfg.find("=") == -1:
+                    #    self.core.add2log("-!ERROR!- %s: Line %s"%(
+                    #        self.join_conf, str(rows_number)))
+                    #    continue
                     """Poichè all'apertura di un file le \n
                     nel file si trasformano in \\n, vengono 
                     ritrasformate in \n, stessa cosa con \r
                     """
                     dictionary = {"\\n":"\n", "\\r":"\r", "\\001":"\001"}
-                    scfg = self.core._replacer(dictionary, cfg)
-                    scfg = scfg.split("=", 1)
-                    cfg = scfg[0]
-                    # Avvia il confparser
-                    cfg = self.core.confparser(cfg, user, channel)
-                    scfg = scfg[1]
-                    scfg = self.core.confparser(scfg, user, channel)
+                    cfg[1] = self.core._replacer(dictionary, cfg[1])
+                    cfg[1] = self.core.confparser(cfg[1], user, channel)
+                    cfg[0] = self.core._replacer(dictionary, cfg[0])
+                    cfg[0] = self.core.confparser(cfg[0], user, channel)
                     # Se la linea corrente combacia con il user corrente
                     # oppure
                     # Se la linea corrente è .all.
-                    if cfg.lower() in (user.lower(), ".all."):
-                        finshed = True
-                        for xint in scfg.split("\n"):
+                    if cfg[0].lower() in (user.lower(), ".all."):
+                        concluted = True
+                        for xint in cfg[1].split("\n"):
                             self.core.irc.sendLine(xint)
 
 def main(core):
@@ -73,4 +66,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os"]
+__call__ = ["os", "library", "library.utils"]

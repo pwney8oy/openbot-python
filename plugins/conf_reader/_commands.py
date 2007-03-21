@@ -53,15 +53,17 @@ class Core:
         """
         self.commandsuser.append(user)
         self.commands += 1
-        conf = open(self.core.startdir + "conf/openbot.commands", "r")
-        for cfg in conf.readlines():
-            cfg_out = self.core.confparser(cfg.strip(), user, chan=chan)
-            self.core.privmsg(user, cfg_out)
+        conf = library.utils.open_file(self.core.startdir+"conf/openbot.commands", 
+        True)
+        for cfg in conf:
+            cfg = self.core.confparser(cfg.strip(), user, chan=chan)
+            self.core.privmsg(user, cfg)
         if owner:
-            conf = open(self.core.startdir + "conf/openbot.owner.commands", "r")
-            for cfg in conf.readlines():
-                cfg_out = self.core.confparser(cfg.strip(), user, chan=chan)
-                self.core.privmsg(user, cfg_out)
+            conf = library.utils.open_file(self.core.startdir+"conf/openbot.owner.commands", 
+            True)
+            for cfg in conf:
+                cfg = self.core.confparser(cfg.strip(), user, chan=chan)
+                self.core.privmsg(user, cfg)
         self.commands -= 1
         del self.commandsuser[self.commandsuser.index(user)]
 
@@ -71,4 +73,4 @@ def main(core):
 
 __functions__ = [main]
 __revision__ = 0
-__call__ = ["os", "thread"]
+__call__ = ["os", "thread", "library", "library.utils"]
