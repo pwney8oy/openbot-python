@@ -79,10 +79,11 @@ def _conf_parser(conf_file, args_for_value=1):
     openconf = open(conf_file, "r") # Apre il file di conf
     conf_list = []
     for conf in openconf.readlines():
+        # Se la linea e' commentata la ignora
         # Prende tutti i dati dal file di conf
-        if args_for_value:
+        if (args_for_value) and (not conf.startswith("#")):
             conf_list.append(conf.strip("\n").split("=", args_for_value))
-        else:
+        elif (not args_for_value) and (not conf.startswith("#")):
             conf_list.append(conf.strip("\n").split("="))
     openconf.close()
     return conf_list

@@ -27,7 +27,7 @@ import urllib
 
 class Core:
     def __init__(self):
-        self.help_message = """Usage: updater.py [OPTION]
+        self.help_message = """Usage: updater.py [OPTIONS]
 OPTIONS:
        --ignore-conf    don't update conf files (conf/).
        --help           print this message."""

@@ -4,7 +4,7 @@
 !date=PRIVMSG .chan. :Date: .day./.month./.year.\n
 !say=PRIVMSG .chan. :.from.: .message.[5:].\n
 !saluta=PRIVMSG .chan. :.from.: Ciao .message.[8:].\n
-!stats=PRIVMSG .from. :<--|-- Channel statistics --|-->\nPRIVMSG .from. :Peak: .peak.\nPRIVMSG .from. :Channel: .chan.\nPRIVMSG .from. :Users .usersnumber.: .users.\nPRIVMSG .from. :Opers .opersnumber.: .opers.\nPRIVMSG .from. :HalfOp .halfopnumber.: .halfop.\nPRIVMSG .from. :Voiced .voicednumber.: .voiced.\n
+!stats=PRIVMSG .from. :<--|-- Channel statistics --|-->\nPRIVMSG .from. :Peak: .peak.\nPRIVMSG .from. :Channel: .chan.\nPRIVMSG .from. :Users .users_number.: .users.\nPRIVMSG .from. :Opers .opers_number.: .opers.\nPRIVMSG .from. :HalfOp .halfop_number.: .halfop.\nPRIVMSG .from. :Voiced .voiced_number.: .voiced.\n
 !peak=PRIVMSG .chan. :.chan. Peak: .peak.\n
 !slap=PRIVMSG .chan. :.from. slaps .message.[6:]. around with a large trout\n
 # Ritorna solo il link di wikipedia
