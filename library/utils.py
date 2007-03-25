@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 ############################################################################
-#    Copyright (C) 2005-206                                                #
-#                       Author: Luciano Ferraro                            #
-#                               email: luciano.ferraro@gmail.com           #
+#    Copyright (C) 2005-2007                                               #
+#                           Ferraro Luciano (aka lux)                      #
+#                            email : luciano.ferraro@gmail.com             #
+#                            website : http://ferraro.wordpress.org/       #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
