@@ -229,7 +229,7 @@ def load_plugins(startdir, self):
                 function(self)
             sys.stdout.write(" [OK]\n")
         except:
-            sys.stdout.write(" [FAILED]\n")
+                sys.stdout.write(" [FAILED]\n")
         send.set_stdout(None)
     os.chdir(startdir)
  
