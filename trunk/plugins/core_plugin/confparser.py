@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 ############################################################################
-#    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(luciano.ferraro@gmail.com)        #
+#    Copyright (C) 2005-2007                                               #
+#                           Ferraro Luciano (aka lux)                      #
+#                            email : luciano.ferraro@gmail.com             #
+#                            website : http://ferraro.wordpress.org/       #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -61,6 +63,7 @@ class ConfParser:
         # .hours. .minutes. .seconds. ecc.
         # .uptime_hours/minutes/secondes.
         #   viene cambiato con il tempo passato dall'avvio del Bot
+        print self.core.conf.botnick
         hms = time.strftime("%H.%M.%S").split(".")
         dmy = time.strftime("%d.%m.%y").split(".")
         owners = ' '.join(self.core.channels.identified())
