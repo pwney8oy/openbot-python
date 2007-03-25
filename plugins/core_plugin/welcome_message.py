@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 ############################################################################
-#    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(luciano.ferraro@gmail.com)        #
+#    Copyright (C) 2005-2007                                               #
+#                           Ferraro Luciano (aka lux)                      #
+#                            email : luciano.ferraro@gmail.com             #
+#                            website : http://ferraro.wordpress.org/       #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -26,6 +28,13 @@ class welcome_message:
     def __init__(self, core):
         self.core = core
         print self.message()
+        self.core.call("joined", self._on_joined)
+
+    def _on_joined(self, channel):
+        """Called when I finish joining a channel.
+        """
+        self.core.privmsg(channel, 
+        "Hello, write !commands in order to know all of my commands.")
 
     def message(self):
         " Return the Welcome Message "
