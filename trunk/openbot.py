@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 ############################################################################
-#    Copyright (C) 2005-206 by RebelCoders.org community                   #
-#                           Authors: LuX(luciano.ferraro@gmail.com)        #
+#    Copyright (C) 2005-2007                                               #
+#                           Ferraro Luciano (aka lux)                      #
+#                            email : luciano.ferraro@gmail.com             #
+#                            website : http://ferraro.wordpress.org/       #
 #                                                                          #
 #                                                                          #
 #    This program is free software; you can redistribute it and/or modify  #
@@ -73,8 +75,10 @@ class Core(irc.IRCClient):
     def connect(self, event, args=None):
         if self.handler_box.has_key(event):
             for function in self.handler_box[event]:
-                if args != None:
+                if (args != None) and (type(args) is tuple):
                     function(*args)
+                elif (args != None) and (type(args) is str):
+                    function(args)
                 else:
                     function()
 
